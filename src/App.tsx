@@ -53,6 +53,10 @@ function App() {
             <p>GitHub: <a href="https://github.com/ajrobinson0201" target="_blank" rel="noreferrer">github.com/ajrobinson0201</a></p>
           </section>
         )}
+
+        {activeTab === "moistureDashboard" && <MoistureDashboard />}
+
+
       </main>
 
       {/* Footer */}
