@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useState } from "react";
+import "./App.css";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [activeTab, setActiveTab] = useState<"home" | "projects" | "contact">("home");
 
   return (
-    <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count isn't {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
-    </>
-  )
+    <div className="app">
+      {/* Navigation */}
+      <header className="navbar">
+        <h1 className="logo">My Portfolio</h1>
+        <nav>
+          <button onClick={() => setActiveTab("home")}>Home</button>
+          <button onClick={() => setActiveTab("projects")}>Projects</button>
+          <button onClick={() => setActiveTab("contact")}>Contact</button>
+        </nav>
+      </header>
+
+      {/* Main Content */}
+      <main>
+        {activeTab === "home" && (
+          <section className="hero">
+            <h2>Welcome!</h2>
+            <p>
+              Hi, I’m <strong>Aaron Robinson</strong>.  
+              I build projects in Python, React, and data engineering.  
+              This dashboard is where I share my work and experiments.
+            </p>
+          </section>
+        )}
+
+        {activeTab === "projects" && (
+          <section className="projects">
+            <h2>Projects</h2>
+            <ul>
+              <li>💧 Moisture Sensor with ESP32 + Raspberry Pi</li>
+              <li>🎮 Python Game (Pygame experiment)</li>
+              <li>📊 Data Engineering + Milvus Vector Database</li>
+            </ul>
+          </section>
+        )}
+
+        {activeTab === "contact" && (
+          <section className="contact">
+            <h2>Contact Me</h2>
+            <p>Email: <a href="mailto:aaron@example.com">aaron@example.com</a></p>
+            <p>GitHub: <a href="https://github.com/yourusername" target="_blank" rel="noreferrer">github.com/yourusername</a></p>
+          </section>
+        )}
+      </main>
+
+      {/* Footer */}
+      <footer>
+        <p>© {new Date().getFullYear()} Aaron Robinson. All rights reserved.</p>
+      </footer>
+    </div>
+  );
 }
 
-export default App
+export default App;
