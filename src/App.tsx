@@ -1,5 +1,6 @@
 import { useState } from "react";
 import "./App.css";
+import MoistureDashboard from "./MoistureSensors";
 
 function App() {
   const [activeTab, setActiveTab] = useState<"home" | "projects" | "contact">("home");
@@ -34,6 +35,7 @@ function App() {
             <h2>Projects</h2>
             <ul>
               <li>💧 Moisture Sensor with ESP32 + Raspberry Pi</li>
+              <MoistureDashboard />
               <li>🎮 Python Game (Pygame experiment)</li>
               <li>📊 Data Engineering + Milvus Vector Database</li>
             </ul>
