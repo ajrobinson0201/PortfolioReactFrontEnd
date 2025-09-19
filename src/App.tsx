@@ -34,8 +34,12 @@ function App() {
           <section className="projects">
             <h2>Projects</h2>
             <ul>
-              <li>💧 Moisture Sensor with ESP32 + Raspberry Pi</li>
-              <MoistureDashboard />
+              <li 
+                style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
+                onClick={() => setActiveTab("MoistureDashboard")}
+              >
+                💧 Moisture Sensor with ESP32 + Raspberry Pi
+              </li>
               <li>🎮 Python Game (Pygame experiment)</li>
               <li>📊 Data Engineering + Milvus Vector Database</li>
             </ul>
