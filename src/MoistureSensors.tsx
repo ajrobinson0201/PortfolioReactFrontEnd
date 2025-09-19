@@ -1,7 +1,13 @@
 import { useEffect, useState } from "react";
 
+interface MoistureReading {
+  timestamp: string;
+  sensor_id: number;
+  moisture: number;
+}
+
 function MoistureDashboard() {
-  const [data, setData] = useState<any>(null);
+  const [data, setData] = useState<MoistureReading[] | null>(null);
 
   useEffect(() => {
     fetch("https://flask-production-4667.up.railway.app/api/moisture")
@@ -14,10 +20,14 @@ function MoistureDashboard() {
     <div>
       <h2>Moisture Sensor Dashboard</h2>
       {data ? (
-        <p>
-          Sensor {data.sensor_id}: {data.moisture}
-          {data.unit} (last updated {data.timestamp})
-        </p>
+        <ul>
+          {data.map((reading) => (
+            <li key={reading.timestamp}>
+              Sensor {reading.sensor_id}: {reading.moisture}% (last updated{" "}
+              {new Date(reading.timestamp).toLocaleTimeString()})
+            </li>
+          ))}
+        </ul>
       ) : (
         <p>Loading moisture data...</p>
       )}
