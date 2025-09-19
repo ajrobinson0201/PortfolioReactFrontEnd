@@ -43,8 +43,8 @@ function App() {
         {activeTab === "contact" && (
           <section className="contact">
             <h2>Contact Me</h2>
-            <p>Email: <a href="mailto:aaron@example.com">aaron@example.com</a></p>
-            <p>GitHub: <a href="https://github.com/yourusername" target="_blank" rel="noreferrer">github.com/yourusername</a></p>
+            <p>Email: <a href="mailto:ajrobinson0201@gmail.com">ajrobinson0201@gmail.com</a></p>
+            <p>GitHub: <a href="https://github.com/ajrobinson0201" target="_blank" rel="noreferrer">github.com/ajrobinson0201</a></p>
           </section>
         )}
       </main>
