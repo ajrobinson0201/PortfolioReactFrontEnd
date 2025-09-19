@@ -3,7 +3,7 @@ import "./App.css";
 import MoistureDashboard from "./MoistureSensors";
 
 function App() {
-  const [activeTab, setActiveTab] = useState<"home" | "projects" | "contact">("home");
+  const [activeTab, setActiveTab] = useState<"home" | "projects" | "contact" | "moistureDashboard">("home");
 
   return (
     <div className="app">
@@ -33,10 +33,10 @@ function App() {
         {activeTab === "projects" && (
           <section className="projects">
             <h2>Projects</h2>
-            <ul>
+            <ul>1 
               <li 
                 style={{ cursor: "pointer", color: "blue", textDecoration: "underline" }}
-                onClick={() => setActiveTab("MoistureDashboard")}
+                onClick={() => setActiveTab("moistureDashboard")}
               >
                 💧 Moisture Sensor with ESP32 + Raspberry Pi
               </li>
