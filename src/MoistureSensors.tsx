@@ -26,40 +26,57 @@ function MoistureDashboard() {
       .catch(console.error);
   }, []);
 
-  // Filter for sensor 1 only
-  const sensor1Data = data.filter((reading) => reading.sensor_id === 1);
+// Separate data for each sensor
+const sensor1Data = data
+.filter((r) => r.sensor_id === 1)
+.map((r) => ({ ...r, time: new Date(r.timestamp).toLocaleTimeString() }));
 
-  // Format timestamps for display on x-axis
-  const chartData = sensor1Data.map((reading) => ({
-    ...reading,
-    time: new Date(reading.timestamp).toLocaleTimeString(),
-  }));
+const sensor2Data = data
+.filter((r) => r.sensor_id === 2)
+.map((r) => ({ ...r, time: new Date(r.timestamp).toLocaleTimeString() }));
 
-  return (
-    <div>
-      <h2>Moisture Sensor Dashboard</h2>
-      {chartData.length > 0 ? (
-        <ResponsiveContainer width="100%" height={300}>
-          <LineChart data={chartData}>
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="time" />
-            <YAxis domain={[0, 100]} unit="%" />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="moisture"
-              name="Sensor 1 Moisture"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
-      ) : (
-        <p>Loading moisture data...</p>
-      )}
-    </div>
-  );
+return (
+<div>
+  <h2>Moisture Sensor Dashboard</h2>
+  {(sensor1Data.length > 0 || sensor2Data.length > 0) ? (
+    <ResponsiveContainer width="100%" height={300}>
+      <LineChart>
+        <CartesianGrid strokeDasharray="3 3" />
+        <XAxis dataKey="time" />
+        <YAxis domain={[0, 100]} unit="%" />
+        <Tooltip />
+        <Legend />
+        {/* Sensor 1 */}
+        <Line
+          type="monotone"
+          data={sensor1Data}
+          dataKey="moisture"
+          name="Sensor 1"
+          stroke="#8884d8"
+          activeDot={{ r: 8 }}
+          isAnimationActive={false}
+          dot={false}
+          connectNulls
+        />
+        {/* Sensor 2 */}
+        <Line
+          type="monotone"
+          data={sensor2Data}
+          dataKey="moisture"
+          name="Sensor 2"
+          stroke="#82ca9d"
+          activeDot={{ r: 8 }}
+          isAnimationActive={false}
+          dot={false}
+          connectNulls
+        />
+      </LineChart>
+    </ResponsiveContainer>
+  ) : (
+    <p>Loading moisture data...</p>
+  )}
+</div>
+);
 }
 
 export default MoistureDashboard;
