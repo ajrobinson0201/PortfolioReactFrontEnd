@@ -12,7 +12,7 @@ import {
 
 
 interface MoistureDataPoint {
-  time: string,
+  timestamp: string,
   moisturePercent: number
 }
 
@@ -26,11 +26,11 @@ interface Sensor {
 //   sensors: Sensor[]
 // }
 
-interface SensorData {
-  sensor_id: string,
-  timestamp: string,
-  moisture: number
-}
+// interface SensorData {
+//   sensor_id: string,
+//   timestamp: string,
+//   moisture: number
+// }
 
 // Generate random pastel colors with enforced variation
 const generatePastelColor = (usedHues: number[] = []): string => {
@@ -52,48 +52,49 @@ const generatePastelColor = (usedHues: number[] = []): string => {
 };
 
 function MoistureDashboard() {
-  const [data, setData] = useState<SensorData[]>([]);
+  const [data, setData] = useState<Sensor[]>([]);
 
   useEffect(() => {
     fetch("https://flask-production-4667.up.railway.app/api/moisture")
       .then((res) => res.json())
-      .then((data: SensorData[]) => {
+      .then((data: Sensor[]) => {
         console.log(data)
         setData(data)
       });
     // .catch(console.error);
   }, []);
 
-  const sensors: Sensor[] = useMemo(() => {
-    const sensorMap = new Map<string, MoistureDataPoint[]>();
+  // const sensors: Sensor[] = useMemo(() => {
+  //   return []
+  // const sensorMap = new Map<string, MoistureDataPoint[]>();
 
-    data.forEach((sensorData: SensorData) => {
-      const moistureDataPoint: MoistureDataPoint = {
-        time: new Date(sensorData.timestamp).toLocaleTimeString(),
-        moisturePercent: sensorData.moisture
-      };
+  // data.forEach((sensorData: SensorData) => {
+  //   const moistureDataPoint: MoistureDataPoint = {
+  //     time: new Date(sensorData.timestamp).toLocaleTimeString(),
+  //     moisturePercent: sensorData.moisture
+  //   };
 
-      if (sensorMap.has(sensorData.sensor_id)) {
-        sensorMap.get(sensorData.sensor_id)!.push(moistureDataPoint);
-      } else {
-        sensorMap.set(sensorData.sensor_id, [moistureDataPoint]);
-      }
-    });
+  //   if (sensorMap.has(sensorData.sensor_id)) {
+  //     sensorMap.get(sensorData.sensor_id)!.push(moistureDataPoint);
+  //   } else {
+  //     sensorMap.set(sensorData.sensor_id, [moistureDataPoint]);
+  //   }
+  // });
 
-    const returnArray = Array.from(sensorMap.entries()).map(([sensorId, moistureData]) => ({
-      id: sensorId,
-      moistureData: moistureData
-    }));
+  // const returnArray = Array.from(sensorMap.entries()).map(([sensorId, moistureData]) => ({
+  //   id: sensorId,
+  //   moistureData: moistureData
+  // }));
 
-    console.log(returnArray);
+  // console.log(returnArray);
 
-    return returnArray;
-  }, [data])
+  // return returnArray;
+  // }, [data])
 
   // Generate colors with enforced variation
   const sensorColors = useMemo(() => {
     const usedHues: number[] = [];
-    return sensors.map(() => {
+    return data.map(() => {
       const color = generatePastelColor(usedHues);
       // Extract hue from the generated color for tracking
       const hueMatch = color.match(/hsl\((\d+),/);
@@ -102,7 +103,7 @@ function MoistureDashboard() {
       }
       return color;
     });
-  }, [sensors]);
+  }, [data]);
 
   // Separate data for each sensor
   // const sensor1Data = data
@@ -116,7 +117,7 @@ function MoistureDashboard() {
   return (
     <div>
       <h2>Moisture Sensor Dashboard</h2>
-      {(sensors.length > 0 && sensors[0].moistureData.length > 0) ? (
+      {(data.length > 0 && data[0].moistureData.length > 0) ? (
         <ResponsiveContainer width="100%" height={300}>
           <LineChart>
             <CartesianGrid strokeDasharray="3 3" />
@@ -124,12 +125,15 @@ function MoistureDashboard() {
             <YAxis domain={[0, 100]} unit="%" />
             <Tooltip />
             <Legend />
-            {sensors.map((sensor, index) => (
+            {data.map((sensor, index) => (
               <Line
                 key={sensor.id}
                 type="monotone"
-                data={sensor.moistureData}
-                dataKey="moisturePercent"
+                data={sensor.moistureData.map((data) => {
+                  console.log(data.moisturePercent)
+                  return { moisture: data.moisturePercent, time: new Date(data.timestamp).toLocaleTimeString() }
+                })}
+                dataKey="moisture"
                 name={sensor.id}
                 stroke={sensorColors[index]}
                 activeDot={{ r: 8 }}
